@@ -97,7 +97,9 @@ generateColors = function(numberColors) {
   points = new Points(number);
   point = null;
   _results = [];
-  for(i = _i = 1; 1 <= number ? _i <= number : _i >= number; i = 1 <= number ? ++_i : --_i) {
+  _results[0] = $.Color(302, 1, 0.6, 0.6).toHslaString();
+  _results[1] = $.Color(255, 0.6, 0.6, 0.6).toHslaString();
+  for(i = _i = 2; 1 <= number ? _i <= number : _i >= number; i = 1 <= number ? ++_i : --_i) {
     point = points.pick(point);
     _ref = RYB.rgb.apply(RYB, point).map(function(x) {
       return Math.floor(255 * x);
@@ -140,7 +142,7 @@ var m = [60, 0, 10, 0],
   excluded_groups = [];
 
 //Set the total number of unique markers/colours
-var countOfColors = 22;
+var countOfColors = 36;
 var colorMap = [];
 
 //alert(rainbow(countOfColors, 1));
@@ -151,34 +153,46 @@ var colorMap = [];
 colorMap = generateColors(countOfColors);
 
 var colors = {
-  "Australia": colorMap[0],
-  "Austria": colorMap[1],
-  "Belgium": colorMap[2],
-  "Canada": colorMap[3],
-  "Chile": colorMap[4],
-  "Czech Republic": colorMap[5],
-  "Denmark": colorMap[6],
-  "Estonia": colorMap[7],
-  "Finland": colorMap[8],
-  "France": colorMap[9],
-  "Germany": colorMap[10],
-  "Ireland": colorMap[11],
-  "Japan": colorMap[12],
-  "Mexico": colorMap[13],
-  "New Zealand": colorMap[14],
-  "Norway": colorMap[15],
-  "Poland": colorMap[16],
-  "Spain": colorMap[17],
-  "Sweden": colorMap[18],
-  "Switzerland": colorMap[19],
-  "United Kingdom": colorMap[20],
-  "United States": colorMap[21],
-
-  // anything not named
-  "other": [255, 2, 84],
-
   //NOT AN ACTUAL CATEOGRY, JUST FOR THE AVERAGE LINE
-  "Average": [125, 100, 60]
+  "Average": colorMap[0],
+  //USED FOR ANY MAPPING NOT DEFINED
+  "other": colorMap[1],
+
+  // USER defined color mappings here:
+  "Australia": colorMap[2],
+  "Austria": colorMap[3],
+  "Belgium": colorMap[4],
+  "Canada": colorMap[5],
+  "Chile": colorMap[6],
+  "Czech Republic": colorMap[7],
+  "Denmark": colorMap[8],
+  "Estonia": colorMap[9],
+  "Finland": colorMap[10],
+  "France": colorMap[11],
+  "Germany": colorMap[12],
+  "Ireland": colorMap[13],
+  "Japan": colorMap[14],
+  "Mexico": colorMap[15],
+  "New Zealand": colorMap[16],
+  "Norway": colorMap[17],
+  "Poland": colorMap[18],
+  "Spain": colorMap[19],
+  "Sweden": colorMap[20],
+  "Switzerland": colorMap[21],
+  "United Kingdom": colorMap[22],
+  "United States": colorMap[23],
+  "Greece": colorMap[24],
+  "Hungary": colorMap[25],
+  "Iceland": colorMap[26],
+  "Israel": colorMap[27],
+  "Italy": colorMap[28],
+  "Korea": colorMap[29],
+  "Luxembourg": colorMap[30],
+  "Netherlands": colorMap[31],
+  "Portugal": colorMap[32],
+  "Slovak Republic": colorMap[33],
+  "Slovenia": colorMap[34],
+  "Turkey": colorMap[35] 
 };
 
 // Scale chart and canvas height
@@ -424,12 +438,7 @@ function color(d, a) {
 
   var c = colors[d];
 
-  if(c) {
-    return c;
-  } else {
-    c = colors["other"];
-    return ["hsla(", c[0], ",", c[1], "%,", c[2], "%,", a, ")"].join("");
-  }
+  return  $.Color(c).alpha(a).toHslaString();
 }
 
 function position(d) {
