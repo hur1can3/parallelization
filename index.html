@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>2012 OECD Health Data</title>
+    <link rel="stylesheet" type="text/css" href="parallel/parallel.css" />
+  </head>
+  <body>
+  <div id="header">
+    <div id="data-size" class="data-size">
+      <span>Select Theme:</span>
+      <button id="dark-theme" onmouseover="this.style.cursor='pointer'">Dark Theme</button><button id="light-theme" onmouseover="this.style.cursor='pointer'" disabled="disabled">Light Theme</button><br>
+      <span>data:</span>
+      <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
+      <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
+      <strong style="display:none" id="opacity"></strong>
+    </div>
+    <div style="min-width:540px; width:740px;">
+      <h1 class="header-top">2012 OECD Health Data</h1>via Parallel Coordinates
+      <br>
+      <span class="header-top">Made by Matthew Levandowski</span>
+    </div>
+
+    <div style="clear:both;"></div>
+  </div>
+  <div id="chart">
+    <canvas id="background"></canvas>
+    <canvas id="foreground"></canvas>
+    <canvas id="highlight"></canvas>
+    <svg></svg>
+  </div>
+  <div id="wrap">
+    <div class="third">
+      <div class="little-box">
+        <h3>Controls:</h3>
+        <button title="Remove selected data" id="remove-filters" onmouseover="this.style.cursor='pointer'" enabled="enabled">Reset Filters</button>
+        <p>
+          <strong>Filter</strong>: Drag along an axis<br>
+          <strong>Remove Filter</strong>: Click the axis background<br>
+          <strong>Drag Filter</strong> to help visualize the relation
+        </p>
+        <p>
+          <strong style="color:#1bff32;">——————</strong> : Average line<br>
+        </p>
+        <br>
+        <h3>About:</h3>
+        <p>
+          Based on data gathered from excel
+          <br><br>
+          Visualized using the Parallel Coordinates technique and d3.js. Reviews and Downloads axis are scaled logarithmically 
+          </p>
+            <br>
+          *Download Health Data from <a href="http://www.oecd.org/els/healthpoliciesanddata/oecdhealthdata2012-frequentlyrequesteddata.htm">OECD</a>
+      </div>
+    </div>
+    <div  class="third">
+      <small>
+        <!--Last rendered <strong id="render-speed"></strong> lines-->
+      </small>
+      <h3>Categories:</h3><button id="unselect-all" onmouseover="this.style.cursor='pointer'">Unselect All Categories</button><button id="select-all" disabled="disabled" onmouseover="this.style.cursor='pointer'">Select All Categories</button>
+      <p id="legend">
+      </p>
+    </div>
+    <div class="third">
+      <div id="sorted-by"></div>
+      <h3>Sample Data: <input type="text" id="search" placeholder="Search Data..."></h3>
+      <p id="category-list">
+      </p>
+    </div>
+  </div>
+  </body>
+  <div id="credits">
+    Credits, etc:
+      Adapted from an <a href="http://bl.ocks.org/d/3267951/">example</a> by <a href="https://github.com/syntagmatic">Kai Chang</a>.  Download estimates from <a href="http://www.oecd.org/els/healthpoliciesanddata/">OECD.org</a>.
+      Released under the <a href="http://opensource.org/licenses/bsd-3-clause">BSD License</a>.
+  </div>
+  <script src="parallel/jquery.js"></script>
+  <script src="parallel/jquery.columnizer.js"></script>
+  <script src="parallel/jquery.color.js"></script>
+  <script src="parallel/d3.v2.js"></script>
+  <script src="parallel/underscore.js"></script>
+  <script src="parallel/2012oecd.js"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+  <script>
+    $(function(){
+      $('.sorted-by').columnize({columns:2});
+    });
+  </script>
+</html>
