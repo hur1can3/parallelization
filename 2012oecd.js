@@ -1,14 +1,124 @@
 // Parallel Coordinates
 // Copyright (c) 2012, Kai Chang
 // Released under the BSD License: http://opensource.org/licenses/BSD-3-Clause
+var Points, RYB, display, generateColors, numberColors, __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) {
+    for(var key in parent) {
+      if(__hasProp.call(parent, key)) child[key] = parent[key];
+    }
+
+    function ctor() {
+      this.constructor = child;
+    }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
+
+RYB = {
+  white: [1, 1, 1],
+  red: [1, 0, 0],
+  yellow: [1, 1, 0],
+  blue: [0.163, 0.373, 0.6],
+  violet: [0.5, 0, 0.5],
+  green: [0, 0.66, 0.2],
+  orange: [1, 0.5, 0],
+  black: [0.2, 0.094, 0.0],
+  rgb: function(r, y, b) {
+    var i, _i, _results;
+    _results = [];
+    for(i = _i = 0; _i <= 2; i = ++_i) {
+      _results.push(RYB.white[i] * (1 - r) * (1 - b) * (1 - y) + RYB.red[i] * r * (1 - b) * (1 - y) + RYB.blue[i] * (1 - r) * b * (1 - y) + RYB.violet[i] * r * b * (1 - y) + RYB.yellow[i] * (1 - r) * (1 - b) * y + RYB.orange[i] * r * (1 - b) * y + RYB.green[i] * (1 - r) * b * y + RYB.black[i] * r * b * y);
+    }
+    return _results;
+  }
+};
+
+Points = (function(_super) {
+
+  __extends(Points, _super);
+
+  Points.name = 'Points';
+
+  function Points(number) {
+    var base, n, _i, _ref;
+    base = Math.ceil(Math.pow(number, 1 / 3));
+    console.log(base);
+    for(n = _i = 0, _ref = Math.pow(base, 3); 0 <= _ref ? _i < _ref : _i > _ref; n = 0 <= _ref ? ++_i : --_i) {
+      this.push([Math.floor(n / (base * base)) / (base - 1), Math.floor(n / base % base) / (base - 1), Math.floor(n % base) / (base - 1)]);
+    }
+    this.picked = null;
+    this.plength = 0;
+  }
+
+  Points.prototype.distance = function(p1) {
+    var _this = this;
+    return [0, 1, 2].map(function(i) {
+      return Math.pow(p1[i] - _this.picked[i], 2);
+    }).reduce(function(a, b) {
+      return a + b;
+    });
+  };
+
+  Points.prototype.pick = function() {
+    var index, pick, _, _ref, _this = this;
+    if(this.picked == null) {
+      pick = this.picked = this.shift();
+      this.plength = 1;
+    } else {
+      _ref = this.reduce(function(_arg, p2, i2) {
+        var d1, d2, i1;
+        i1 = _arg[0], d1 = _arg[1];
+        d2 = _this.distance(p2);
+        if(d1 < d2) {
+          return [i2, d2];
+        } else {
+          return [i1, d1];
+        }
+      }, [0, this.distance(this[0])]), index = _ref[0], _ = _ref[1];
+      pick = this.splice(index, 1)[0];
+      this.picked = [0, 1, 2].map(function(i) {
+        return(_this.plength * _this.picked[i] + pick[i]) / (_this.plength + 1);
+      });
+      this.plength++;
+    }
+    return pick;
+  };
+
+  return Points;
+
+})(Array);
+
+
+generateColors = function(numberColors) {
+  var b, color, el, g, i, number, point, points, r, _i, _ref, _results;
+  number = numberColors;
+  points = new Points(number);
+  point = null;
+  _results = [];
+  for(i = _i = 1; 1 <= number ? _i <= number : _i >= number; i = 1 <= number ? ++_i : --_i) {
+    point = points.pick(point);
+    _ref = RYB.rgb.apply(RYB, point).map(function(x) {
+      return Math.floor(255 * x);
+    }), r = _ref[0], g = _ref[1], b = _ref[2];
+    color = $.Color(r, g, b, 0.6).toHslaString();
+    _results[i] = color;
+  }
+  return _results;
+};
+
+
 function rainbow(numOfSteps, step, alpha) {
+  //use golden ratio
+  var golden_ratio_conjugate = 0.618033988749895;
   // 30 random hues with step of 12 degrees
-  var hue = Math.floor(Math.random() * numOfSteps) * step;
-  var sat = Math.floor(Math.random() * numOfSteps) * step;
+  var hue = Math.floor(Math.random() * numOfSteps) * (step + golden_ratio_conjugate);
+  var sat = Math.floor(Math.random() * (1 - 0.5 + 1)) + 0.5
 
   return $.Color({
     hue: hue,
-    saturation: sat * 1.5,
+    saturation: 0.6,
     lightness: 0.6,
     alpha: 1
   }).toHslaString();
@@ -30,13 +140,15 @@ var m = [60, 0, 10, 0],
   excluded_groups = [];
 
 //Set the total number of unique markers/colours
-var countOfColors = 22;  
+var countOfColors = 22;
 var colorMap = [];
 
 //alert(rainbow(countOfColors, 1));
-for (var i = 0; i < countOfColors; i++) {
-    colorMap[i] = rainbow(countOfColors, i);
-}
+// for (var i = 0; i < countOfColors; i++) {
+//     colorMap[i] = rainbow(countOfColors, i);
+// }
+
+colorMap = generateColors(countOfColors);
 
 var colors = {
   "Australia": colorMap[0],
@@ -47,7 +159,7 @@ var colors = {
   "Czech Republic": colorMap[5],
   "Denmark": colorMap[6],
   "Estonia": colorMap[7],
-  "Finland":colorMap[8],
+  "Finland": colorMap[8],
   "France": colorMap[9],
   "Germany": colorMap[10],
   "Ireland": colorMap[11],
@@ -63,7 +175,7 @@ var colors = {
   "United States": colorMap[21],
 
   // anything not named
-  "other": [84, 84, 84],
+  "other": [255, 2, 84],
 
   //NOT AN ACTUAL CATEOGRY, JUST FOR THE AVERAGE LINE
   "Average": [125, 100, 60]
@@ -102,6 +214,7 @@ d3.csv("data/2012oecd.csv", function(raw_data) {
   for(i = 0; i < raw_data.length; i++) {
     d = raw_data[i];
     for(var k in d) {
+      //exclude name and idcolumn
       if(!_.isNaN(raw_data[0][k] - 0) && k != 'id' && k != 'Country') {
         d[k] = parseFloat(d[k]) || 0;
       }
