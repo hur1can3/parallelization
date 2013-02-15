@@ -1,6 +1,8 @@
 // Parallel Coordinates
 // Copyright (c) 2012, Kai Chang
 // Released under the BSD License: http://opensource.org/licenses/BSD-3-Clause
+
+//from ryb.js
 var Points, RYB, display, generateColors, numberColors, __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) {
     for(var key in parent) {
@@ -44,7 +46,6 @@ Points = (function(_super) {
   function Points(number) {
     var base, n, _i, _ref;
     base = Math.ceil(Math.pow(number, 1 / 3));
-    console.log(base);
     for(n = _i = 0, _ref = Math.pow(base, 3); 0 <= _ref ? _i < _ref : _i > _ref; n = 0 <= _ref ? ++_i : --_i) {
       this.push([Math.floor(n / (base * base)) / (base - 1), Math.floor(n / base % base) / (base - 1), Math.floor(n % base) / (base - 1)]);
     }
@@ -111,21 +112,6 @@ generateColors = function(numberColors) {
 };
 
 
-function rainbow(numOfSteps, step, alpha) {
-  //use golden ratio
-  var golden_ratio_conjugate = 0.618033988749895;
-  // 30 random hues with step of 12 degrees
-  var hue = Math.floor(Math.random() * numOfSteps) * (step + golden_ratio_conjugate);
-  var sat = Math.floor(Math.random() * (1 - 0.5 + 1)) + 0.5
-
-  return $.Color({
-    hue: hue,
-    saturation: 0.6,
-    lightness: 0.6,
-    alpha: 1
-  }).toHslaString();
-};
-
 var width = document.body.clientWidth,
   height = d3.max([document.body.clientHeight - 440, 500]);
 
@@ -144,11 +130,6 @@ var m = [60, 0, 10, 0],
 //Set the total number of unique markers/colours
 var countOfColors = 36;
 var colorMap = [];
-
-//alert(rainbow(countOfColors, 1));
-// for (var i = 0; i < countOfColors; i++) {
-//     colorMap[i] = rainbow(countOfColors, i);
-// }
 
 colorMap = generateColors(countOfColors);
 
@@ -222,7 +203,7 @@ background.lineWidth = 1.7;
 var svg = d3.select("svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 // Load the data and visualization
-d3.csv("data/2012oecd.csv", function(raw_data) {
+d3.csv("2012oecd.csv", function(raw_data) {
   // Convert quantitative scales to floats
   data = [];
   for(i = 0; i < raw_data.length; i++) {
