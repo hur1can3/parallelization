@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>2012 OECD Health Data</title>
-    <link rel="stylesheet" type="text/css" href="parallel/parallel.css" />
+    <link rel="stylesheet" type="text/css" href="parallel.css" />
   </head>
   <body>
   <div id="header">
@@ -75,17 +74,10 @@
       Adapted from an <a href="http://bl.ocks.org/d/3267951/">example</a> by <a href="https://github.com/syntagmatic">Kai Chang</a>.  Download estimates from <a href="http://www.oecd.org/els/healthpoliciesanddata/">OECD.org</a>.
       Released under the <a href="http://opensource.org/licenses/bsd-3-clause">BSD License</a>.
   </div>
-  <script src="parallel/jquery.js"></script>
-  <script src="parallel/jquery.columnizer.js"></script>
-  <script src="parallel/jquery.color.js"></script>
-  <script src="parallel/d3.v2.js"></script>
-  <script src="parallel/underscore.js"></script>
-  <script src="parallel/2012oecd.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min.js "></script>
+  <script src="jquery.color.js"></script>
+  <script src="2012oecd.js"></script>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-  <script>
-    $(function(){
-      $('.sorted-by').columnize({columns:2});
-    });
-  </script>
 </html>
